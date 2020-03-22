@@ -41,6 +41,10 @@ class _HomePage extends State<HomePage> {
                 child: Text('命名路由异常处理'),
                 onPressed: () => Navigator.pushNamed(context, 'unknowPage'),
               ),
+              RaisedButton(
+                child: Text('ListView 使用'),
+                onPressed: () => Navigator.pushNamed(context, 'listPage'),
+              ),
             ],
           )),
     );
