@@ -4,6 +4,7 @@ import 'package:flutterdemo/MallPage.dart';
 import 'package:flutterdemo/UnknownPage.dart';
 import 'package:flutterdemo/ListPage.dart';
 import 'package:flutterdemo/CustomScrollPage.dart';
+import 'package:flutterdemo/BasicPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
       routes: {
         "mallPage": (context) => MallPage(title: '商城首页',),
         "listPage": (context) => ListPage(),
-        "customScrollPage": (context) => CustomScrollPage()
+        "customScrollPage": (context) => CustomScrollPage(),
+        "basicPage": (context) => BasicPage(),
       }, // 注册路由
       onUnknownRoute: (RouteSettings setting) => MaterialPageRoute(builder: (context) => UnknownPage()),
       home: HomePage(),

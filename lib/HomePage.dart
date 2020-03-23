@@ -49,6 +49,10 @@ class _HomePage extends State<HomePage> {
                 child: Text('CustomScrollPage 使用'),
                 onPressed: () => Navigator.pushNamed(context, 'customScrollPage'),
               ),
+              RaisedButton(
+                child: Text('Text, Button, Image 使用'),
+                onPressed: () => Navigator.pushNamed(context, 'basicPage'),
+              ),
             ],
           )),
     );
