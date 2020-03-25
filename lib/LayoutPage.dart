@@ -30,6 +30,15 @@ class LayoutPage extends StatelessWidget {
 }
 
 //Row(
+//children: <Widget>[
+//Expanded(flex: 1, child: Container(color: Colors.yellow, height: 60)), //设置了flex=1，因此宽度由Expanded来分配
+//Container(color: Colors.red, width: 100, height: 180,),
+//Container(color: Colors.black, width: 60, height: 80,),
+//Expanded(flex: 1, child: Container(color: Colors.green,height: 60),)/设置了flex=1，因此宽度由Expanded来分配
+//],
+//);
+
+//Row(
 //mainAxisAlignment: MainAxisAlignment.spaceAround, //由于容器与子Widget一样宽，因此这行设置排列间距的代码并未起作用
 ////          mainAxisSize: MainAxisSize.min, //让容器宽度与所有子Widget的宽度一致
 //children: <Widget>[
