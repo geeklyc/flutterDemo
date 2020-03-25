@@ -53,6 +53,10 @@ class _HomePage extends State<HomePage> {
                 child: Text('Text, Button, Image 使用'),
                 onPressed: () => Navigator.pushNamed(context, 'basicPage'),
               ),
+              RaisedButton(
+                child: Text('Layout 使用'),
+                onPressed: () => Navigator.pushNamed(context, 'layoutPage'),
+              ),
             ],
           )),
     );

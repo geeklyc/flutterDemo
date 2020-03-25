@@ -5,6 +5,7 @@ import 'package:flutterdemo/UnknownPage.dart';
 import 'package:flutterdemo/ListPage.dart';
 import 'package:flutterdemo/CustomScrollPage.dart';
 import 'package:flutterdemo/BasicPage.dart';
+import 'package:flutterdemo/LayoutPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         "listPage": (context) => ListPage(),
         "customScrollPage": (context) => CustomScrollPage(),
         "basicPage": (context) => BasicPage(),
+        "layoutPage": (context) => LayoutPage(),
       }, // 注册路由
       onUnknownRoute: (RouteSettings setting) => MaterialPageRoute(builder: (context) => UnknownPage()),
       home: HomePage(),
