@@ -57,6 +57,10 @@ class _HomePage extends State<HomePage> {
                 child: Text('Layout 使用'),
                 onPressed: () => Navigator.pushNamed(context, 'layoutPage'),
               ),
+              RaisedButton(
+                child: Text('组合与自绘 使用'),
+                onPressed: () => Navigator.pushNamed(context, 'combinationPage'),
+              ),
             ],
           )),
     );
