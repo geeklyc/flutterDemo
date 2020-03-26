@@ -17,6 +17,21 @@ class _HomePage extends State<HomePage> {
       body: Center(
           child: Column(
             children: <Widget>[
+              Theme(
+                data: ThemeData(iconTheme: IconThemeData(color: Colors.red)),
+                child: Icon(Icons.favorite),
+              ),
+              Theme(
+                data: Theme.of(context).copyWith(iconTheme: IconThemeData(color: Colors.green)),
+                child: Icon(Icons.feedback),
+              ),
+              Container(
+                color: Theme.of(context).primaryColor,
+                child: Text(
+                  'Text With',
+                  style: Theme.of(context).textTheme.title,
+                ),
+              ),
               RaisedButton(
                 child: Text('基本路由'),
                 onPressed: () => Navigator.push(

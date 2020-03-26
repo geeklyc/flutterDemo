@@ -17,7 +17,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.dark,
+        accentColor: Colors.black,
+        primaryColor: Colors.cyan,
+        iconTheme: IconThemeData(color: Colors.yellow),
+        textTheme: TextTheme(body1: TextStyle(color: Colors.red))
+//        primarySwatch: Colors.blue,
       ),
       routes: {
         "mallPage": (context) => MallPage(title: '商城首页',),
