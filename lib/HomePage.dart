@@ -24,14 +24,14 @@ class _HomePage extends State<HomePage> {
                   child: Image.asset('assets/common/headicon.jpeg', width: 80, height: 80,),
                 ),
               ),
-              Theme(
-                data: ThemeData(iconTheme: IconThemeData(color: Colors.red)),
-                child: Icon(Icons.favorite),
-              ),
-              Theme(
-                data: Theme.of(context).copyWith(iconTheme: IconThemeData(color: Colors.green)),
-                child: Icon(Icons.feedback),
-              ),
+//              Theme(
+//                data: ThemeData(iconTheme: IconThemeData(color: Colors.red)),
+//                child: Icon(Icons.favorite),
+//              ),
+//              Theme(
+//                data: Theme.of(context).copyWith(iconTheme: IconThemeData(color: Colors.green)),
+//                child: Icon(Icons.feedback),
+//              ),
               Container(
                 color: Theme.of(context).primaryColor,
                 child: Text(
@@ -87,6 +87,11 @@ class _HomePage extends State<HomePage> {
                 child: Text('手势'),
                 onPressed: () => Navigator.pushNamed(context, 'gesPage'),
               ),
+              RaisedButton(
+                child: Text('数据传递'),
+                onPressed: () => Navigator.pushNamed(context, 'dataPage'),
+              ),
+
             ],
           )),
     );
