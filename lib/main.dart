@@ -7,6 +7,7 @@ import 'package:flutterdemo/CustomScrollPage.dart';
 import 'package:flutterdemo/BasicPage.dart';
 import 'package:flutterdemo/LayoutPage.dart';
 import 'package:flutterdemo/CombinationPage.dart';
+import 'package:flutterdemo/GesPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         "basicPage": (context) => BasicPage(),
         "layoutPage": (context) => LayoutPage(),
         "combinationPage": (context) => CombinationPage(title: '组合与自绘',),
+        "gesPage": (context) => GesPage(),
       }, // 注册路由
       onUnknownRoute: (RouteSettings setting) => MaterialPageRoute(builder: (context) => UnknownPage()),
       home: HomePage(),

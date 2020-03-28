@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/MallPage.dart';
 
@@ -7,9 +8,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   String _msg = '';
-
   @override
   Widget build(BuildContext context) {
+    print(formatDate(DateTime.now(), [mm, '月', dd, '日', hh, ':', n]));
+    print(formatDate(DateTime.now(), [m, '月第', w, '周']));
     return new Scaffold(
       appBar: AppBar(
         title: Text('新首页'),
@@ -17,6 +19,11 @@ class _HomePage extends State<HomePage> {
       body: Center(
           child: Column(
             children: <Widget>[
+              Container(
+                child: ClipRRect(
+                  child: Image.asset('assets/common/headicon.jpeg', width: 80, height: 80,),
+                ),
+              ),
               Theme(
                 data: ThemeData(iconTheme: IconThemeData(color: Colors.red)),
                 child: Icon(Icons.favorite),
@@ -75,6 +82,10 @@ class _HomePage extends State<HomePage> {
               RaisedButton(
                 child: Text('组合与自绘 使用'),
                 onPressed: () => Navigator.pushNamed(context, 'combinationPage'),
+              ),
+              RaisedButton(
+                child: Text('手势'),
+                onPressed: () => Navigator.pushNamed(context, 'gesPage'),
               ),
             ],
           )),
