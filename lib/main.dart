@@ -9,6 +9,7 @@ import 'package:flutterdemo/LayoutPage.dart';
 import 'package:flutterdemo/CombinationPage.dart';
 import 'package:flutterdemo/GesPage.dart';
 import 'package:flutterdemo/dataTransfer/DataPage.dart';
+import 'package:flutterdemo/animation/AnimationPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         "combinationPage": (context) => CombinationPage(title: '组合与自绘',),
         "gesPage": (context) => GesPage(),
         "dataPage": (context) => DataPage(),
+        'animationPage': (context) => AnimationPage(),
       }, // 注册路由
       onUnknownRoute: (RouteSettings setting) => MaterialPageRoute(builder: (context) => UnknownPage()),
       home: HomePage(),

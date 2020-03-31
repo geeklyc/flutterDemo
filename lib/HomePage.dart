@@ -91,7 +91,10 @@ class _HomePage extends State<HomePage> {
                 child: Text('数据传递'),
                 onPressed: () => Navigator.pushNamed(context, 'dataPage'),
               ),
-
+              RaisedButton(
+                child: Text('动画'),
+                onPressed: () => Navigator.pushNamed(context, 'animationPage'),
+              ),
             ],
           )),
     );
