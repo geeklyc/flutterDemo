@@ -1,9 +1,11 @@
 import 'package:date_format/date_format.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdemo/MallPage.dart';
 import 'dart:isolate';
 import 'dart:async';
-
+import 'dart:io';
+import 'dart:convert';
 
 class HomePage extends StatefulWidget {
   State<StatefulWidget> createState() => _HomePage();
@@ -18,12 +20,62 @@ class _HomePage extends State<HomePage> {
 //      Future<String>.delayed(Duration(seconds:3), () => "Hello")
 //          .then((x) => "$x 2019");
 
-  //声明了一个延迟2秒返回Hello的Future，并注册了一个then返回拼接后的Hello 2019
-  Future<String> fetchContent() =>
-      Future<String>.delayed(Duration(seconds:2), () => "Hello")
-          .then((x) => "$x 2019");
-//异步函数会同步等待Hello 2019的返回，并打印
-  func() async => print(await fetchContent());
+//  //声明了一个延迟2秒返回Hello的Future，并注册了一个then返回拼接后的Hello 2019
+//  Future<String> fetchContent() =>
+//      Future<String>.delayed(Duration(seconds:2), () => "Hello")
+//          .then((x) => "$x 2019");
+////异步函数会同步等待Hello 2019的返回，并打印
+//  func() async => print(await fetchContent());
+
+
+  get() async {
+    //创建网络调用示例，设置通用请求行为(超时时间)
+    var httpClient = HttpClient();
+    httpClient.idleTimeout = Duration(seconds: 5);
+
+    //构造URI，设置user-agent为"Custom-UA"
+    var uri = Uri.parse("https://flutter.dev");
+    var request = await httpClient.getUrl(uri);
+    request.headers.add("user-agent", "Custom-UA");
+
+    //发起请求，等待响应
+    var response = await request.close();
+
+    //收到响应，打印结果
+    if (response.statusCode == HttpStatus.ok) {
+      print(await response.transform(utf8.decoder).join());
+    } else {
+      print('Error: \nHttp status ${response.statusCode}');
+    }
+  }
+
+  void getRequest() async {
+    // 创建网络调用示例
+    Dio dio = new Dio();
+    // 设置URI及请求user-agent后发起请求
+    var response = await dio.get("https://flutter.dev", options: Options(
+      headers: {
+        "user-agent": "Custom-UA"
+      }
+    ));
+    // 打印请求结果
+    if (response.statusCode == HttpStatus.ok) {
+      print("成功 ${response.data.toString()}");
+    } else {
+      print("错误 ${response.statusCode}");
+    }
+  }
+
+  void getHttp() async {
+    try {
+      Response response = await Dio().get("http://v.juhe.cn/toutiao/index?key=5b4d54e80de8d532805bfc91d4c1e4c3&type=top");
+      print(response);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -87,9 +139,9 @@ class _HomePage extends State<HomePage> {
 
 
 
-    print("func before");
-    func();
-    print("func after");
+//    print("func before");
+//    func();
+//    print("func after");
 
     return new Scaffold(
       appBar: AppBar(
@@ -103,6 +155,22 @@ class _HomePage extends State<HomePage> {
                   child: Image.asset('assets/common/headicon.jpeg', width: 80, height: 80,),
                 ),
               ),
+              Row(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text('Get网络'),
+                    onPressed: () => get()
+                  ),
+                  RaisedButton(
+                    child: Text('Dio请求'),
+                    onPressed: () => getRequest(),
+                  ),
+                  RaisedButton(
+                    child: Text('Dio GET请求'),
+                    onPressed: () => getHttp(),
+                  )
+                ],
+              ),
 //              Theme(
 //                data: ThemeData(iconTheme: IconThemeData(color: Colors.red)),
 //                child: Icon(Icons.favorite),
@@ -111,13 +179,13 @@ class _HomePage extends State<HomePage> {
 //                data: Theme.of(context).copyWith(iconTheme: IconThemeData(color: Colors.green)),
 //                child: Icon(Icons.feedback),
 //              ),
-              Container(
-                color: Theme.of(context).primaryColor,
-                child: Text(
-                  'Text With',
-                  style: Theme.of(context).textTheme.title,
-                ),
-              ),
+//              Container(
+//                color: Theme.of(context).primaryColor,
+//                child: Text(
+//                  'Text With',
+//                  style: Theme.of(context).textTheme.title,
+//                ),
+//              ),
               RaisedButton(
                 child: Text('基本路由'),
                 onPressed: () => Navigator.push(
@@ -173,6 +241,10 @@ class _HomePage extends State<HomePage> {
               RaisedButton(
                 child: Text('动画'),
                 onPressed: () => Navigator.pushNamed(context, 'animationPage'),
+              ),
+              RaisedButton(
+                child: Text('新闻'),
+                onPressed: () => Navigator.pushNamed(context, 'newsPage'),
               ),
             ],
           )),

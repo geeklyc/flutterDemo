@@ -10,6 +10,7 @@ import 'package:flutterdemo/CombinationPage.dart';
 import 'package:flutterdemo/GesPage.dart';
 import 'package:flutterdemo/dataTransfer/DataPage.dart';
 import 'package:flutterdemo/animation/AnimationPage.dart';
+import 'package:flutterdemo/News/NewsPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         accentColor: Colors.black,
         primaryColor: Colors.cyan,
         iconTheme: IconThemeData(color: Colors.yellow),
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         "gesPage": (context) => GesPage(),
         "dataPage": (context) => DataPage(),
         'animationPage': (context) => AnimationPage(),
+        'newsPage': (context) => NewsPage(),
       }, // 注册路由
       onUnknownRoute: (RouteSettings setting) => MaterialPageRoute(builder: (context) => UnknownPage()),
       home: HomePage(),
