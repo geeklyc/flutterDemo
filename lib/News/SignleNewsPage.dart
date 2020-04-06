@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:date_format/date_format.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'NewsItem.dart';
@@ -75,7 +76,8 @@ class _SignleNewsPage extends State<SignleNewsPage> {
       });
       this.setState(() {
         newsList = dataSource;
-        offState = true;
+//        offState = true;
+        isLoading = false;
         showMore = false;
       });
       print("上拉加载结束");
@@ -161,6 +163,7 @@ class _SignleNewsPage extends State<SignleNewsPage> {
   }
 
   Future _onRefresh() async {
+    print('下拉刷新 ${isLoading}');
     if (isLoading) {
       return;
     }
