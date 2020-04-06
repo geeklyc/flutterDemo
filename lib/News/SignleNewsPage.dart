@@ -18,6 +18,12 @@ class _SignleNewsPage extends State<SignleNewsPage> {
   final Map<String, String> item;
 
   List newsList = [];
+  bool isLoading = false; // 下拉刷新
+  bool showMore = false; // 加载更多
+  bool offState = false; // 进度条
+  int page = 0; // 页码
+  ScrollController _scrollController;
+
 
   _fetchNewsList() async {
     Dio dio = Dio();
@@ -33,7 +39,11 @@ class _SignleNewsPage extends State<SignleNewsPage> {
       });
       this.setState(() {
         newsList = dataSource;
+        isLoading = false;
+        offState = true;
+        showMore = false;
       });
+      print("下拉刷新结束");
 //      print("成功 ${newsList[0].title}");
     } catch (e) {
       print("失败 ${e}");
@@ -41,64 +51,153 @@ class _SignleNewsPage extends State<SignleNewsPage> {
 
   }
 
-  renderListView() {
-    if (newsList.length == 0) {
-      return Center(
-        child: Text('暂无数据'),
-      );
+  _fetchMoreNews() async {
+    if (isLoading) {
+      return;
     }
 
-//使用ListView.separated设置分割线
-    return Expanded(
-      child: ListView.separated(
-          itemCount: newsList.length,
-          separatorBuilder: (BuildContext context, int index) => index %2 == 0? Divider(color: Colors.green) : Divider(color: Colors.red),//index为偶数，创建绿色分割线；index为奇数，则创建红色分割线
-          itemBuilder: (BuildContext context, int index) {
-            var item = newsList[index];
-            return Row(
+    setState(() {
+      isLoading = true;
+      page++;
+    });
+    print('上拉加载更多 page = ${page}');
+
+    Dio dio = Dio();
+    var urlStr = 'http://v.juhe.cn/toutiao/index?key=5b4d54e80de8d532805bfc91d4c1e4c3&type=${item['key']}';
+    print(urlStr);
+    try {
+      Response response = await dio.get(urlStr);
+      final jsonResponse = json.decode(response.toString());
+      final List originList = jsonResponse['result']['data'];
+      var dataSource = [];
+      originList.forEach((item) {
+        dataSource.add(NewsItem.fromJson(item));
+      });
+      this.setState(() {
+        newsList = dataSource;
+        offState = true;
+        showMore = false;
+      });
+      print("上拉加载结束");
+//      print("成功 ${newsList[0].title}");
+    } catch (e) {
+      print("失败 ${e}");
+    }
+  }
+
+  Widget refreshItemWidget(BuildContext context, int position) {
+//    print("positon ${position}");
+    if (position < newsList.length) {
+      var item = newsList[position];
+      return Row(
+        children: <Widget>[
+          Padding(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: CachedNetworkImage(
+                imageUrl: item.picUrl,
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                width: 80,
+                height: 80,
+              ),
+            ),
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10), // 左上右下
+          ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Text(item.title),
                 Padding(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
-                      imageUrl: item.picUrl,
-                      placeholder: (context, url) => CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                      width: 80,
-                      height: 80,
-//                      color: Colors.green,
-                    ),
-                  ),
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10), // 左上右下
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(item.title),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                              child: Text('作者: ${item.authorName}', maxLines: 1,),
-                            ),
-                            Text('发布日期: ${item.date}')
-                          ],
-                        ),
-                      )
+                      Expanded(
+                        child: Text('作者: ${item.authorName}', maxLines: 1,),
+                      ),
+                      Text('发布日期: ${item.date}')
                     ],
                   ),
                 )
-
               ],
-            );
-            return Text('测试');
-          }
-      ),
-    );
+            ),
+          )
+
+        ],
+      );
+    }
+
+    if (showMore) {
+      return Container(
+        height: 50.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text('加载中...', style: TextStyle(fontSize: 16.0))
+          ],
+        ),
+      );
+    }
+
+    return null;
+//    return Container(
+//      child: Center(
+//        child: Text('暂无数据'),
+//      ),
+//    );
+
+//    if (newsList.length == 0) {
+//      return Center(
+//        child: Text('暂无数据'),
+//      );
+//    }
+
+//使用ListView.separated设置分割线
+
+  }
+
+  Future _onRefresh() async {
+    if (isLoading) {
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+      page = 0;
+    });
+    print("下拉刷新 page = ${page}");
+    _fetchNewsList();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // 监听滚动
+    _scrollController = ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        print("滑动到了最底部 ${_scrollController.position.pixels}");
+        setState(() {
+          showMore = true;
+        });
+        _fetchMoreNews();
+      }
+    });
+    super.initState();
+    _fetchNewsList();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    // 停止监听滚动
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -109,15 +208,22 @@ class _SignleNewsPage extends State<SignleNewsPage> {
 //    print(sHeight);
     // TODO: implement build
     return Scaffold(
-        body: Column(
+        body: Stack(
           children: <Widget>[
-            Center(
-              child: FlatButton(
-                onPressed: _fetchNewsList,
-                child: Text('加载'),
-              ),
+            RefreshIndicator(
+              child: ListView.separated(
+                  controller: _scrollController,
+                  itemBuilder: refreshItemWidget,
+                  separatorBuilder: (BuildContext context, int index) => Divider(color: Colors.green),
+                  itemCount: newsList.length + 1),
+              onRefresh: _onRefresh,
             ),
-            renderListView(),
+            Offstage(
+              offstage: offState,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
           ],
         )
     );
