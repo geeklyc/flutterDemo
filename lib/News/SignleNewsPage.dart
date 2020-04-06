@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'NewsItem.dart';
@@ -56,9 +57,42 @@ class _SignleNewsPage extends State<SignleNewsPage> {
             var item = newsList[index];
             return Row(
               children: <Widget>[
+                Padding(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                      imageUrl: item.picUrl,
+                      placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      width: 80,
+                      height: 80,
+//                      color: Colors.green,
+                    ),
+                  ),
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10), // 左上右下
+                ),
                 Expanded(
-                  child: Text(item.title),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(item.title),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                              child: Text('作者: ${item.authorName}', maxLines: 1,),
+                            ),
+                            Text('发布日期: ${item.date}')
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 )
+
               ],
             );
             return Text('测试');
