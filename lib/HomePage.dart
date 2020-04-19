@@ -6,6 +6,7 @@ import 'dart:isolate';
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   State<StatefulWidget> createState() => _HomePage();
@@ -74,6 +75,24 @@ class _HomePage extends State<HomePage> {
       print(e);
     }
   }
+
+  // 配置方法通道
+  final platform = MethodChannel('samples.lyc/utils');
+  // 配置异步方法
+  openMarket() async {
+    int result;
+    try {
+      result = await platform.invokeMethod('openAppMarket', <String, dynamic> {
+        'appId': 'com.cmbc.test',
+        'packageName': '测试包',
+      });
+    } catch(e) {
+      result = -1;
+    }
+    print("Result: $result");
+  }
+
+
 
 
 
@@ -150,11 +169,11 @@ class _HomePage extends State<HomePage> {
       body: Center(
           child: Column(
             children: <Widget>[
-              Container(
-                child: ClipRRect(
-                  child: Image.asset('assets/common/headicon.jpeg', width: 80, height: 80,),
-                ),
-              ),
+//              Container(
+//                child: ClipRRect(
+//                  child: Image.asset('assets/common/headicon.jpeg', width: 80, height: 80,),
+//                ),
+//              ),
               Row(
                 children: <Widget>[
                   RaisedButton(
@@ -171,6 +190,19 @@ class _HomePage extends State<HomePage> {
                   )
                 ],
               ),
+              Row(
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text('调用原生方法'),
+                    onPressed: () => openMarket(),
+                  ),
+                  RaisedButton(
+                    child: Text('调用原生地图'),
+                    onPressed: () => Navigator.pushNamed(context, 'mapPage'),
+                  )
+                ],
+              ),
+
 //              Theme(
 //                data: ThemeData(iconTheme: IconThemeData(color: Colors.red)),
 //                child: Icon(Icons.favorite),

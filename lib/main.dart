@@ -11,6 +11,7 @@ import 'package:flutterdemo/GesPage.dart';
 import 'package:flutterdemo/dataTransfer/DataPage.dart';
 import 'package:flutterdemo/animation/AnimationPage.dart';
 import 'package:flutterdemo/News/NewsPage.dart';
+import 'package:flutterdemo/MapView/MapPage.dart';
 
 void main() => runApp(MyApp());
 
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         "dataPage": (context) => DataPage(),
         'animationPage': (context) => AnimationPage(),
         'newsPage': (context) => NewsPage(),
+        'mapPage': (context) => MapPage()
       }, // 注册路由
       onUnknownRoute: (RouteSettings setting) => MaterialPageRoute(builder: (context) => UnknownPage()),
       home: HomePage(),
